@@ -1,0 +1,6 @@
+﻿{
+    "title":  "Unknown field test",
+    "description":  "Should be rejected",
+    "unexpectedField":  "extra",
+    "doneStatus":  false
+}

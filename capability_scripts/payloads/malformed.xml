@@ -1,0 +1,5 @@
+﻿<todo>
+  <title>Malformed XML test
+  <doneStatus>false</doneStatus>
+  <description>Missing closing title tag</description>
+</todo>
