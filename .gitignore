@@ -1,0 +1,21 @@
+
+# Gradle caches and generated build output
+**/.gradle/
+**/build/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.iml
+
+# Temporary files and backups
+*.tmp
+*.bak
+*~
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Temporary exploratory payloads kept locally
+/payloads/
