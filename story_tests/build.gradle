@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+}
+
+group = 'ca.mcgill.ecse429'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'io.cucumber:cucumber-java:7.20.1'
+    testImplementation 'io.cucumber:cucumber-core:7.20.1'
+    testImplementation 'io.rest-assured:rest-assured:5.5.0'
+    testImplementation 'com.google.code.gson:gson:2.11.0'
+}
+
+// Cucumber CLI supports random ordering with an explicit reproducible seed.
+// Launch through the existing Gradle wrapper in the sibling unit_tests folder.
+tasks.register('cucumber', JavaExec) {
+    group = 'verification'
+    description = 'Run all Part B Cucumber story tests in a seeded random order.'
+    dependsOn tasks.named('testClasses')
+    classpath = sourceSets.test.runtimeClasspath
+    mainClass = 'io.cucumber.core.cli.Main'
+    doFirst { file("${buildDir}/reports/cucumber").mkdirs() }
+
+    def seed = providers.gradleProperty('seed').orElse('12345').get()
+    def arguments = [
+        '--plugin', 'pretty',
+        '--plugin', 'json:build/reports/cucumber/results.json',
+        '--plugin', 'junit:build/reports/cucumber/results.xml',
+        '--glue', 'ca.mcgill.ecse429.partb',
+        '--order', "random:${seed}"
+    ]
+    if (providers.gradleProperty('tags').isPresent()) {
+        arguments += ['--tags', providers.gradleProperty('tags').get()]
+    }
+    arguments += ['src/test/resources/features']
+    setArgs(arguments)
+}
