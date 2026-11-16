@@ -106,16 +106,22 @@ This design allows scenarios to execute independently and in different orders wi
 With the Todo Manager API running, open PowerShell in the repository root and execute:
 
 ```powershell
-.\unit_tests\gradlew.bat -p .\story_tests cucumber -Pseed=12345 --rerun-tasks
+.\unit_tests\gradlew.bat -p .\story_tests cucumber --rerun-tasks
 ```
 
-To demonstrate execution in a different randomized order, run:
+By default, Cucumber automatically randomizes the scenario execution order each time the suite runs.
+
+To reproduce specific execution orders, an explicit random seed can be provided:
+
+```powershell
+.\unit_tests\gradlew.bat -p .\story_tests cucumber -Pseed=12345 --rerun-tasks
+```
 
 ```powershell
 .\unit_tests\gradlew.bat -p .\story_tests cucumber -Pseed=67890 --rerun-tasks
 ```
 
-The `-Pseed` parameter controls the randomized scenario execution order, while `--rerun-tasks` forces Gradle to execute the tests again.
+The `-Pseed` parameter specifies a reproducible random order, while `--rerun-tasks` forces Gradle to execute the suite again instead of reusing previous build results.
 
 ### Story Test Execution Results
 
@@ -136,6 +142,10 @@ Additional verification confirmed that:
 - A manual PowerShell comparison of the API collection before and after a complete test run confirmed that the collection remained unchanged.
 
 These results demonstrate successful story execution, test independence, service readiness verification, and restoration of the original system state.
+
+The two recorded verification runs used explicit random seeds (12345 and 67890), and all 30 scenarios and 150 steps passed in both executions.
+
+The demonstration video instead uses the default command without an explicit seed. Cucumber automatically randomizes the scenario execution order for each run, demonstrating that the suite can execute successfully without relying on a predetermined order.
 
 ## Additional Deliverables
 
