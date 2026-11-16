@@ -26,13 +26,13 @@ tasks.register('cucumber', JavaExec) {
     mainClass = 'io.cucumber.core.cli.Main'
     doFirst { file("${buildDir}/reports/cucumber").mkdirs() }
 
-    def seed = providers.gradleProperty('seed').orElse('12345').get()
+    def seed = providers.gradleProperty('seed').orNull
     def arguments = [
         '--plugin', 'pretty',
         '--plugin', 'json:build/reports/cucumber/results.json',
         '--plugin', 'junit:build/reports/cucumber/results.xml',
         '--glue', 'ca.mcgill.ecse429.partb',
-        '--order', "random:${seed}"
+        '--order', (seed ? "random:${seed}" : 'random')
     ]
     if (providers.gradleProperty('tags').isPresent()) {
         arguments += ['--tags', providers.gradleProperty('tags').get()]
